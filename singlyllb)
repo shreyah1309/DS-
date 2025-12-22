@@ -1,0 +1,148 @@
+#include <stdio.h> 
+#include <stdlib.h> 
+ 
+struct node { 
+    int data; 
+    struct node *next; 
+}; 
+ 
+struct node *head = NULL; 
+ 
+void create(int x) { 
+    struct node *t = malloc(sizeof(struct node)); 
+    struct node *p = head; 
+    t->data = x; 
+    t->next = NULL; 
+ 
+    if (head == NULL) { 
+        head = t; 
+        return; 
+    } 
+ 
+    while (p->next != NULL) 
+        p = p->next; 
+ 
+    p->next = t; 
+} 
+ 
+void deleteFirst() { 
+    struct node *t; 
+    if (head == NULL) { 
+        printf("List is empty\n"); 
+        return; 
+    } 
+    t = head; 
+    head = head->next; 
+    free(t); 
+}
+
+void deleteLast() { 
+    struct node *p = head; 
+    struct node *q = NULL; 
+ 
+    if (head == NULL) { 
+        printf("List is empty\n"); 
+        return; 
+    } 
+ 
+    if (head->next == NULL) { 
+        free(head); 
+        head = NULL; 
+        return; 
+    } 
+ 
+    while (p->next != NULL) { 
+        q = p; 
+        p = p->next; 
+    } 
+ 
+    q->next = NULL; 
+    free(p); 
+} 
+ 
+void deleteValue(int x) { 
+    struct node *p = head; 
+    struct node *q = NULL; 
+ 
+    if (head == NULL) { 
+        printf("List is empty\n"); 
+        return; 
+    } 
+ 
+    if (head->data == x) { 
+        head = head->next; 
+        free(p); 
+        return; 
+    } 
+ 
+    while (p != NULL && p->data != x) { 
+        q = p; 
+        p = p->next; 
+    } 
+ 
+    if (p == NULL) { 
+        printf("Element not found\n"); 
+        return; 
+    } 
+ 
+    q->next = p->next; 
+    free(p); 
+} 
+ 
+void display() { 
+    struct node *p = head; 
+ 
+    if (p == NULL) { 
+        printf("List is empty\n"); 
+        return; 
+    } 
+ 
+    while (p != NULL) { 
+        printf("%d -> ", p->data); 
+        p = p->next; 
+    } 
+    printf("NULL\n"); 
+} 
+ 
+int main() { 
+    int ch, x; 
+ 
+    while (1) { 
+        printf("\n1.Create\n2.Delete First\n3.Delete Last\n4.Delete 
+Value\n5.Display\n6.Exit\n"); 
+        printf("Enter choice: "); 
+        scanf("%d", &ch);  
+ 
+        switch (ch) { 
+        case 1: 
+            printf("Enter value: "); 
+            scanf("%d", &x); 
+            create(x); 
+            break; 
+ 
+        case 2: 
+            deleteFirst(); 
+            break; 
+ 
+        case 3: 
+            deleteLast(); 
+            break; 
+ 
+        case 4: 
+            printf("Enter value to delete: "); 
+            scanf("%d", &x); 
+            deleteValue(x); 
+            break; 
+ 
+        case 5: 
+            display(); 
+            break; 
+ 
+        case 6: 
+            exit(0); 
+
+        default: 
+            printf("Invalid choice\n"); 
+        } 
+    } 
+}
